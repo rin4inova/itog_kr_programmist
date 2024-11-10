@@ -1,0 +1,53 @@
+1. Используя команду cat в терминале операционной системы Linux, создать
+два файла Домашние животные (заполнив файл собаками, кошками,
+хомяками) и Вьючные животными заполнив файл Лошадьми, верблюдами и
+ослы), а затем объединить их. Просмотреть содержимое созданного файла.
+Переименовать файл, дав ему новое имя (Друзья человека).
+
+cat > domesticAnimals
+dog
+cat
+hamster
+ctrl+D
+
+cat > packAnimals
+horse
+camel
+donkey
+ctrl+D
+
+cat domesticAnimals packAnimals > humanFriends
+
+cat humanFriends
+
+2. Создать директорию, переместить файл туда.
+mkdir dir1
+mv humanFriends dir1/
+
+3. Подключить дополнительный репозиторий MySQL. Установить любой пакет
+из этого репозитория.
+
+mkdir testdir1
+Копируем deb пакет в папку testdir1
+cd testdir1
+ls
+sudo su
+dpkg -i mysql-apt-config_0.8.33-1_all.deb
+cd /etc/apt
+cd sources.list.d/
+ls -al
+cat mysql.list
+apt update
+exit
+sudo apt install mysql
+sudo apt install mysql-community-server
+
+4. Установить и удалить deb-пакет с помощью dpkg
+sudo su
+wget https://download.virtualbox.org/virtualbox/7.1.4/virtualbox-7.1_7.1.4-165100~Ubuntu~jammy_amd64.deb
+dpkg -i virtualbox-7.1_7.1.4-165100~Ubuntu~jammy_amd64.deb
+apt -f install
+
+dpkg -r virtualbox-7.1
+
+5. Выложить историю команд в терминале ubuntu
