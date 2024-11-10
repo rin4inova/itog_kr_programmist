@@ -1,0 +1,323 @@
+7. В подключенном MySQL репозитории создать базу данных “Друзья
+человека”
+
+sudo mysql -u root -p
+
+SHOW DATABASES;
+
+CREATE DATABASE human_friends_db;
+
+8. Создать таблицы с иерархией из диаграммы в БД
+
+USE human_friends_db;
+
+CREATE TABLE human_friends (
+id_human_friend VARCHAR(20) NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE pets (
+id_pet VARCHAR(20) NOT NULL PRIMARY KEY,
+id_human_friend VARCHAR(20) NOT NULL DEFAULT 'pet'
+);
+
+CREATE TABLE pack_animals (
+id_pack_animal VARCHAR(20) NOT NULL PRIMARY KEY,
+id_human_friend VARCHAR(20) NOT NULL DEFAULT 'pack_animal'
+);
+
+CREATE TABLE dogs (
+id_dog INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+id_pet VARCHAR(20) NOT NULL DEFAULT 'dog',
+name VARCHAR(30) NOT NULL,
+birth_date DATE
+);
+
+CREATE TABLE cats (
+id_cat INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+id_pet VARCHAR(20) NOT NULL DEFAULT 'cat',
+name VARCHAR(30) NOT NULL,
+birth_date DATE
+);
+
+CREATE TABLE hamsters (
+id_hamster INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+id_pet VARCHAR(20) NOT NULL DEFAULT 'hamster',
+name VARCHAR(30) NOT NULL,
+birth_date DATE
+);
+
+CREATE TABLE horses (
+id_horse INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+id_pack_animal VARCHAR(20) NOT NULL DEFAULT 'horse',
+name VARCHAR(30) NOT NULL,
+birth_date DATE
+);
+
+CREATE TABLE camels (
+id_camel INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+id_pack_animal VARCHAR(20) NOT NULL DEFAULT 'camel',
+name VARCHAR(30) NOT NULL,
+birth_date DATE
+);
+
+CREATE TABLE donkeys (
+id_donkey INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+id_pack_animal VARCHAR(20) NOT NULL DEFAULT 'donkey',
+name VARCHAR(30) NOT NULL,
+birth_date DATE
+);
+
+
+CREATE TABLE commands (
+command VARCHAR(30) NOT NULL PRIMARY KEY
+);
+
+ALTER TABLE dogs ADD FOREIGN KEY (id_pet) REFERENCES pets (id_pet);
+ALTER TABLE cats ADD FOREIGN KEY (id_pet) REFERENCES pets (id_pet);
+ALTER TABLE hamsters ADD FOREIGN KEY (id_pet) REFERENCES pets (id_pet);
+
+ALTER TABLE horses ADD FOREIGN KEY (id_pack_animal) REFERENCES pack_animals (id_pack_animal);
+ALTER TABLE camels ADD FOREIGN KEY (id_pack_animal) REFERENCES pack_animals (id_pack_animal);
+ALTER TABLE donkeys ADD FOREIGN KEY (id_pack_animal) REFERENCES pack_animals (id_pack_animal);
+
+ALTER TABLE pets ADD FOREIGN KEY (id_human_friend) REFERENCES human_friends (id_human_friend);
+ALTER TABLE pack_animals ADD FOREIGN KEY (id_human_friend) REFERENCES human_friends (id_human_friend);
+
+INSERT INTO human_friends (id_human_friend) VALUES ('pet');
+INSERT INTO human_friends (id_human_friend) VALUES ('pack_animal');
+
+SELECT * FROM human_friends;
+
+INSERT INTO pets (id_pet) VALUES ('dog');
+INSERT INTO pets (id_pet) VALUES ('cat');
+INSERT INTO pets (id_pet) VALUES ('hamster');
+SELECT * FROM pets;
+
+INSERT INTO pack_animals (id_pack_animal) VALUES ('horse');
+INSERT INTO pack_animals (id_pack_animal) VALUES ('camel');
+INSERT INTO pack_animals (id_pack_animal) VALUES ('donkey');
+SELECT * FROM pack_animals;
+
+INSERT INTO commands (command) VALUES ('run');
+INSERT INTO commands (command) VALUES ('jump');
+INSERT INTO commands (command) VALUES ('sit down');
+INSERT INTO commands (command) VALUES ('lay');
+SELECT * FROM commands;
+
+
+CREATE TABLE id_dog_commands (
+id_dog INT NOT NULL,
+command VARCHAR(30) NOT NULL,
+PRIMARY KEY (id_dog, command)
+);
+
+CREATE TABLE id_cat_commands (
+id_cat INT NOT NULL,
+command VARCHAR(30) NOT NULL,
+PRIMARY KEY (id_cat, command)
+);
+
+CREATE TABLE id_hamster_commands (
+id_hamster INT NOT NULL,
+command VARCHAR(30) NOT NULL,
+PRIMARY KEY (id_hamster, command)
+);
+
+CREATE TABLE id_horse_commands (
+id_horse INT NOT NULL,
+command VARCHAR(30) NOT NULL,
+PRIMARY KEY (id_horse, command)
+);
+
+CREATE TABLE id_camel_commands (
+id_camel INT NOT NULL,
+command VARCHAR(30) NOT NULL,
+PRIMARY KEY (id_camel, command)
+);
+
+CREATE TABLE id_donkey_commands (
+id_donkey INT NOT NULL,
+command VARCHAR(30) NOT NULL,
+PRIMARY KEY (id_donkey, command)
+);
+
+
+ALTER TABLE id_dog_commands ADD FOREIGN KEY (id_dog) REFERENCES dogs (id_dog);
+ALTER TABLE id_cat_commands ADD FOREIGN KEY (id_cat) REFERENCES cats (id_cat);
+ALTER TABLE id_hamster_commands ADD FOREIGN KEY (id_hamster) REFERENCES hamsters (id_hamster);
+ALTER TABLE id_horse_commands ADD FOREIGN KEY (id_horse) REFERENCES horses (id_horse);
+ALTER TABLE id_camel_commands ADD FOREIGN KEY (id_camel) REFERENCES camels (id_camel);
+ALTER TABLE id_donkey_commands ADD FOREIGN KEY (id_donkey) REFERENCES donkeys (id_donkey);
+
+
+ALTER TABLE id_dog_commands ADD FOREIGN KEY (command) REFERENCES commands (command);
+ALTER TABLE id_cat_commands ADD FOREIGN KEY (command) REFERENCES commands (command);
+ALTER TABLE id_hamster_commands ADD FOREIGN KEY (command) REFERENCES commands (command);
+ALTER TABLE id_horse_commands ADD FOREIGN KEY (command) REFERENCES commands (command);
+ALTER TABLE id_camel_commands ADD FOREIGN KEY (command) REFERENCES commands (command);
+ALTER TABLE id_donkey_commands ADD FOREIGN KEY (command) REFERENCES commands (command);
+
+9. Заполнить низкоуровневые таблицы именами(животных), командами
+которые они выполняют и датами рождения
+
+INSERT INTO dogs (name, birth_date) VALUES ('Reks','2024-01-15');
+INSERT INTO dogs (name, birth_date) VALUES ('Tuzik','2023-04-08');
+INSERT INTO dogs (name, birth_date) VALUES ('Barbos','2022-01-04');
+SELECT * FROM dogs;
+
+INSERT INTO cats (name, birth_date) VALUES ('Barsik','2022-01-15');
+INSERT INTO cats (name, birth_date) VALUES ('Matroskin','2024-07-08');
+INSERT INTO cats (name, birth_date) VALUES ('Korzhik','2020-02-04');
+SELECT * FROM cats;
+
+INSERT INTO hamsters (name, birth_date) VALUES ('Boss','2020-01-17');
+INSERT INTO hamsters (name, birth_date) VALUES ('Pushok','2024-04-28');
+INSERT INTO hamsters (name, birth_date) VALUES ('Chernysh','2021-07-03');
+SELECT * FROM hamsters;
+
+INSERT INTO horses (name, birth_date) VALUES ('Mustang','2021-12-13');
+INSERT INTO horses (name, birth_date) VALUES ('Morgan','2021-05-25');
+INSERT INTO horses (name, birth_date) VALUES ('Gnedoy','2020-07-23');
+SELECT * FROM horses;
+
+INSERT INTO camels (name, birth_date) VALUES ('Dilly','2023-12-15');
+INSERT INTO camels (name, birth_date) VALUES ('Villy','2023-04-17');
+INSERT INTO camels (name, birth_date) VALUES ('Milly','2023-04-21');
+SELECT * FROM camels;
+
+INSERT INTO donkeys (name, birth_date) VALUES ('Yuliy','2023-12-15');
+INSERT INTO donkeys (name, birth_date) VALUES ('Cesar','2023-04-17');
+INSERT INTO donkeys (name, birth_date) VALUES ('Mul','2023-04-21');
+SELECT * FROM donkeys;
+
+INSERT INTO id_dog_commands (id_dog, command) VALUES (1,'jump');
+INSERT INTO id_dog_commands (id_dog, command) VALUES (1,'run');
+INSERT INTO id_dog_commands (id_dog, command) VALUES (2,'sit down');
+INSERT INTO id_dog_commands (id_dog, command) VALUES (3,'lay');
+SELECT * FROM id_dog_commands;
+
+INSERT INTO id_cat_commands (id_cat, command) VALUES (1,'sit down');
+INSERT INTO id_cat_commands (id_cat, command) VALUES (1,'jump');
+INSERT INTO id_cat_commands (id_cat, command) VALUES (2,'lay');
+INSERT INTO id_cat_commands (id_cat, command) VALUES (3,'run');
+SELECT * FROM id_cat_commands;
+
+INSERT INTO id_hamster_commands (id_hamster, command) VALUES (1,'jump');
+INSERT INTO id_hamster_commands (id_hamster, command) VALUES (1,'run');
+INSERT INTO id_hamster_commands (id_hamster, command) VALUES (2,'sit down');
+INSERT INTO id_hamster_commands (id_hamster, command) VALUES (3,'sit down');
+SELECT * FROM id_hamster_commands;
+
+INSERT INTO id_horse_commands (id_horse, command) VALUES (2,'sit down');
+INSERT INTO id_horse_commands (id_horse, command) VALUES (2,'run');
+INSERT INTO id_horse_commands (id_horse, command) VALUES (2,'jump');
+INSERT INTO id_horse_commands (id_horse, command) VALUES (3,'sit down');
+SELECT * FROM id_horse_commands;
+
+INSERT INTO id_camel_commands (id_camel, command) VALUES (1,'lay');
+INSERT INTO id_camel_commands (id_camel, command) VALUES (2,'lay');
+INSERT INTO id_camel_commands (id_camel, command) VALUES (3,'sit down');
+INSERT INTO id_camel_commands (id_camel, command) VALUES (3,'lay');
+SELECT * FROM id_camel_commands;
+
+INSERT INTO id_donkey_commands (id_donkey, command) VALUES (1,'lay');
+INSERT INTO id_donkey_commands (id_donkey, command) VALUES (1,'sit down');
+INSERT INTO id_donkey_commands (id_donkey, command) VALUES (2,'sit down');
+INSERT INTO id_donkey_commands (id_donkey, command) VALUES (3,'lay');
+SELECT * FROM id_donkey_commands;
+
+10. Удалив из таблицы верблюдов, т.к. верблюдов решили перевезти в другой
+питомник на зимовку. Объединить таблицы лошади, и ослы в одну таблицу
+
+DROP TABLE id_camel_commands;
+DROP TABLE camels;
+
+SELECT * FROM horses;
+SELECT * FROM donkeys;
+
+(SELECT id_pack_animal, name, birth_date FROM horses) UNION (SELECT id_pack_animal, name, birth_date FROM donkeys);
+
+11.Создать новую таблицу “молодые животные” в которую попадут все
+животные старше 1 года, но младше 3 лет и в отдельном столбце с точностью
+до месяца подсчитать возраст животных в новой таблице.
+
+12. Объединить все таблицы в одну, при этом сохраняя поля, указывающие на
+прошлую принадлежность к старым таблицам.
+
+CREATE TABLE id_dog_commands_concat AS
+SELECT id_dog, GROUP_CONCAT(command SEPARATOR ', ') AS commands
+FROM id_dog_commands
+GROUP BY id_dog;
+
+
+CREATE TABLE id_cat_commands_concat AS
+SELECT id_cat, GROUP_CONCAT(command SEPARATOR ', ') AS commands
+FROM id_cat_commands
+GROUP BY id_cat;
+
+
+CREATE TABLE id_hamster_commands_concat AS
+SELECT id_hamster, GROUP_CONCAT(command SEPARATOR ', ') AS commands
+FROM id_hamster_commands
+GROUP BY id_hamster;
+
+
+CREATE TABLE id_horse_commands_concat AS
+SELECT id_horse, GROUP_CONCAT(command SEPARATOR ', ') AS commands
+FROM id_horse_commands
+GROUP BY id_horse;
+
+CREATE TABLE id_donkey_commands_concat AS
+SELECT id_donkey, GROUP_CONCAT(command SEPARATOR ', ') AS commands
+FROM id_donkey_commands
+GROUP BY id_donkey;
+
+
+CREATE TABLE all_animals AS
+SELECT id_pet AS 'type', name, birth_date, TIMESTAMPDIFF(MONTH, birth_date, CURDATE()) AS age_month, commands
+FROM dogs
+JOIN 
+id_dog_commands_concat USING(id_dog)
+
+UNION 
+
+SELECT id_pet AS 'type', name, birth_date, TIMESTAMPDIFF(MONTH, birth_date, CURDATE()) AS age_month, commands
+FROM cats
+JOIN 
+id_cat_commands_concat USING(id_cat)
+
+UNION
+
+SELECT id_pet AS 'type', name, birth_date, TIMESTAMPDIFF(MONTH, birth_date, CURDATE()) AS age_month, commands
+FROM hamsters
+JOIN 
+id_hamster_commands_concat USING(id_hamster)
+
+UNION 
+
+SELECT id_pack_animal AS 'type', name, birth_date, TIMESTAMPDIFF(MONTH, birth_date, CURDATE()) AS age_month, commands
+FROM horses
+JOIN 
+id_horse_commands_concat USING(id_horse)
+
+UNION 
+
+SELECT id_pack_animal AS 'type', name, birth_date, TIMESTAMPDIFF(MONTH, birth_date, CURDATE()) AS age_month, commands
+FROM donkeys
+JOIN 
+id_donkey_commands_concat USING(id_donkey);
+
+
+SELECT * FROM all_animals;
+
+
+CREATE TABLE young_animals AS
+SELECT type, name, birth_date, TIMESTAMPDIFF(MONTH, birth_date, CURDATE()) AS age_month, commands
+FROM all_animals
+WHERE age_month BETWEEN 12 AND 36;
+
+SELECT * FROM young_animals;
+
+exit
+
+mysqldump -uroot -p human_friends_db > /home/tuyana/human_friends_db_dump.sql
